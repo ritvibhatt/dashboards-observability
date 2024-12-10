@@ -102,7 +102,11 @@ describe('Testing dashboard table', () => {
   });
 
   it('Adds the percentile filters', () => {
-    
+    Cypress.on('uncaught:exception', (err, runnable) => {
+      console.error('Uncaught exception:', err);
+      console.error('Error message:', err.message);
+      console.error('Error stack:', err.stack);
+    });
     cy.get('[data-test-subj="dashboardTable"]').should('be.visible');
     cy.get('[data-test-subj="dashboard-table-percentile-button-2"]').click();
 
