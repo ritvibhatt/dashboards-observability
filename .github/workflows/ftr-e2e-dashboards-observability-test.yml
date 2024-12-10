@@ -108,6 +108,15 @@ jobs:
           node-version: ${{ steps.versions_step.outputs.node_version }}
           registry-url: "https://registry.npmjs.org"
 
+      - name: Configure OpenSearch Dashboards
+        run: |
+          rm -rf ./config/opensearch_dashboards.yml
+          cat << 'EOT' > ./config/opensearch_dashboards.yml
+          server.host: "0.0.0.0"
+          home.disableWelcomeScreen: true
+          EOT
+        working-directory: OpenSearch-Dashboards
+
       - name: Install correct yarn version for OpenSearch Dashboards
         id: setup-yarn
         run: |
@@ -171,7 +180,7 @@ jobs:
 
       - name: Run Cypress tests
         run: |
-          yarn cypress:run-with-security --browser chromium --spec 'cypress/integration/plugins/observability-dashboards/*.js'
+          yarn cypress:run-without-security --browser chromium --spec 'cypress/integration/plugins/observability-dashboards/*.js'
         working-directory: opensearch-dashboards-functional-test
 
       - name: Capture failure screenshots
